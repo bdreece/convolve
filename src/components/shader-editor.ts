@@ -1,3 +1,5 @@
+import styles from '../styles/index.css?url';
+
 const defaults = {
     vertex: `#version 300 es
 #pragma debug on
@@ -113,7 +115,6 @@ void main() {
 `,
 };
 
-const styles = new URL('../styles/index.css', import.meta.url);
 const template = document.createElement('template');
 
 template.innerHTML = `

@@ -1,4 +1,5 @@
-const styles = new URL('../styles/index.css', import.meta.url);
+import styles from '../styles/index.css?url';
+
 const template = document.createElement('template');
 
 template.innerHTML = `
