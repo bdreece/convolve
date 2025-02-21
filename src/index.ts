@@ -6,29 +6,12 @@ if (!gl) {
     throw new Error('webgl2 not supported');
 }
 
-const pixels = Float32Array.from({
-    *[Symbol.iterator]() {
-        for (let j = 0; j < gl.canvas.height; ++j) {
-            for (let i = 0; i < gl.canvas.width; ++i) {
-                yield i;
-                yield j;
-            }
-        }
-    }
-});
-
-const texCoords = Float32Array.from({
-    *[Symbol.iterator]() {
-        for (let j = 0; j < gl.canvas.height; ++j) {
-            for (let i = 0; i < gl.canvas.width; ++i) {
-                yield i / gl.canvas.width;
-                yield j / gl.canvas.height;
-            }
-        }
-    }
-});
-
 const preview = document.querySelector('image-preview')!;
+preview.image.addEventListener('load', () => {
+    canvas.width = preview.image.width;
+    canvas.height = preview.image.height;
+});
+
 const form = document.querySelector<HTMLFormElement>('#form')!;
 form.addEventListener('submit', e => {
     e.preventDefault();
@@ -64,11 +47,33 @@ function transformImage(program: WebGLProgram, image: HTMLImageElement) {
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
+    const positions = Float32Array.from({
+        *[Symbol.iterator]() {
+            for (let j = 0; j < gl.canvas.height; ++j) {
+                for (let i = 0; i < gl.canvas.width; ++i) {
+                    yield i;
+                    yield j;
+                }
+            }
+        }
+    });
+
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.enableVertexAttribArray(positionAttribute);
     gl.vertexAttribPointer(positionAttribute, 2, gl.FLOAT, false, 0, 0);
-    gl.bufferData(gl.ARRAY_BUFFER, pixels, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+    const texCoords = Float32Array.from({
+        *[Symbol.iterator]() {
+            for (let j = 0; j < gl.canvas.height; ++j) {
+                for (let i = 0; i < gl.canvas.width; ++i) {
+                    yield i / gl.canvas.width;
+                    yield j / gl.canvas.height;
+                }
+            }
+        }
+    });
 
     const texCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
@@ -95,7 +100,7 @@ function transformImage(program: WebGLProgram, image: HTMLImageElement) {
     gl.uniform1i(imageUniform, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.drawArrays(gl.POINTS, 0, pixels.length / 2);
+    gl.drawArrays(gl.POINTS, 0, positions.length / 2);
 
     console.timeEnd('tranformed image!');
 }
