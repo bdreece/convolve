@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <link
+        rel="icon"
+        href="/favicon.ico"
+    />
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+    >
+
+    <title>Convolve</title>
+</head>
+
+<body>
+    <main
+        class="min-h-screen grid md:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] p-4"
+    >
+        <header class="flex gap-3 items-center col-span-full mb-4">
+            <a
+                class="flex gap-1 items-center"
+                href="/"
+            >
+                <img
+                    src="/favicon-32x32.png"
+                    width="32"
+                    height="32"
+                />
+                <h1 class="text-2xl font-bold">
+                    convolve
+                </h1>
+            </a>
+        </header>
+
+        <section
+            class="flex flex-col items-center justify-center gap-2 mb-6 xl:flex-row md:mb-0 md:pr-4"
+        >
+            <image-preview
+                src="#image-input"
+                width="400"
+                height="300"
+            ></image-preview>
+
+            <canvas
+                id="canvas"
+                class="block outline outline-gray-300 mx-auto"
+                width="400"
+                height="300"
+            ></canvas>
+        </section>
+
+        <section class="flex items-center md:pl-4">
+            <form
+                id="form"
+                class="w-full"
+            >
+                <div class="form-layout">
+                    <div class="form-control">
+                        <label class="form-label">Image Upload</label>
+                        <input
+                            id="image-input"
+                            class="form-input font-mono text-sm"
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-control xl:w-1/2">
+                        <label class="form-label">Vertex Shader</label>
+                        <shader-editor
+                            name="vertex"
+                            kind="vertex"
+                        ></shader-editor>
+                    </div>
+
+                    <div class="form-control xl:w-1/2">
+                        <label class="form-label">Fragment Shader</label>
+                        <shader-editor
+                            name="fragment"
+                            kind="fragment"
+                        ></shader-editor>
+                    </div>
+
+                    <div class="flex justify-center gap-2 w-full">
+                        <button
+                            class="btn btn-primary"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+
+                        <button
+                            class="btn btn-secondary"
+                            type="reset"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <footer class="col-span-full">
+            <p>
+                Copyright &copy;
+                2025 &mdash;
+                <a
+                    href="https://github.com/bdreece"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Brian Reece
+                </a>
+            </p>
+        </footer>
+    </main>
+
+
+    <script
+        type="module"
+        src="/src/index.ts"
+    ></script>
+</body>
+
+</html>

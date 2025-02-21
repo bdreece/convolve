@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "extends": "@tsconfig/strictest",
+    "compilerOptions": {
+        "target": "ES2016",
+        "lib": [
+            "ESNext"
+        ],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "moduleDetection": "force",
+        "tsBuildInfoFile": "./node_modules/.tsconfig.node.tsbuildinfo",
+        "noEmit": true,
+        "skipLibCheck": true,
+        "allowJs": true,
+        "allowImportingTsExtensions": true,
+    },
+    "include": [
+        "vite.config.ts",
+    ]
+}
