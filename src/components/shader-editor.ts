@@ -1,3 +1,4 @@
+import styles from '../styles/index.css?inline';
 const defaults = {
     vertex: `#version 300 es
 #pragma debug on
@@ -114,9 +115,10 @@ void main() {
 };
 
 const template = document.createElement('template');
-const styles = document.querySelector<HTMLLinkElement>('#tailwind');
 
 template.innerHTML = `
+    <style>${styles}</style>
+
     <ol
         class="form-input list-decimal whitespace-pre-wrap h-[400px] overflow-y-scroll pl-10 text-wrap font-mono text-sm"
         contenteditable
@@ -244,7 +246,6 @@ export default class ShaderEditor extends HTMLElement {
         });
 
         shadow.append(
-            styles.cloneNode(),
             template.content.cloneNode(true),
         );
 
