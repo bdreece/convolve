@@ -1,13 +1,7 @@
-import styles from '../styles/index.css?url';
-
 const template = document.createElement('template');
+const styles = document.querySelector<HTMLLinkElement>('#tailwind');
 
 template.innerHTML = `
-    <link
-        rel="stylesheet"
-        href="${styles}"
-    >
-
     <img
         class="outline-gray-500"
         width="400"
@@ -65,7 +59,10 @@ export default class ImagePreview extends HTMLElement {
             mode: 'open',
         });
 
-        shadow.append(template.content.cloneNode(true));
+        shadow.append(
+            styles.cloneNode(),
+            template.content.cloneNode(true),
+        );
 
         this._image = shadow.querySelector('img')!;
     }

@@ -1,5 +1,4 @@
 export * from './components';
-import './styles/index.css'
 
 const canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
 const gl = canvas.getContext('webgl2');

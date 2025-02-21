@@ -1,5 +1,3 @@
-import styles from '../styles/index.css?url';
-
 const defaults = {
     vertex: `#version 300 es
 #pragma debug on
@@ -116,10 +114,9 @@ void main() {
 };
 
 const template = document.createElement('template');
+const styles = document.querySelector<HTMLLinkElement>('#tailwind');
 
 template.innerHTML = `
-    <link rel="stylesheet" href="${styles}">
-
     <ol
         class="form-input list-decimal whitespace-pre-wrap h-[400px] overflow-y-scroll pl-10 text-wrap font-mono text-sm"
         contenteditable
@@ -246,8 +243,10 @@ export default class ShaderEditor extends HTMLElement {
             delegatesFocus: true
         });
 
-        const content = template.content.cloneNode(true)
-        shadow.append(content);
+        shadow.append(
+            styles.cloneNode(),
+            template.content.cloneNode(true),
+        );
 
         this._list = shadow.querySelector('ol')!;
     }
