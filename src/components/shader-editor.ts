@@ -1,7 +1,6 @@
 import styles from '../styles/index.css?inline';
 const defaults = {
     vertex: `#version 300 es
-#pragma debug on
 
 in vec2 a_position;
 in vec2 a_texCoord;
@@ -11,6 +10,7 @@ uniform vec2 u_resolution;
 out vec2 v_texCoord;
 
 void main() {
+    // convert pixel position to clip-space
     vec2 normalized = a_position / u_resolution;
     vec2 scaled = 2.0 * normalized;
     vec2 translated = scaled - 1.0;
@@ -21,7 +21,17 @@ void main() {
 `,
 
     fragment: `#version 300 es
-#pragma debug
+
+// Sample convolution matrices
+#define identity mat3(0, 0, 0, 0, 1, 0, 0, 0, 0)
+#define edge0 mat3(1, 0, -1, 0, 0, 0, -1, 0, 1)
+#define edge1 mat3(0, 1, 0, 1, -4, 1, 0, 1, 0)
+#define edge2 mat3(-1, -1, -1, -1, 8, -1, -1, -1, -1)
+#define sharpen mat3(0, -1, 0, -1, 5, -1, 0, -1, 0)
+#define box_blur mat3(1, 1, 1, 1, 1, 1, 1, 1, 1) * 0.1111
+#define gaussian_blur mat3(1, 2, 1, 2, 4, 2, 1, 2, 1) * 0.0625
+#define emboss mat3(-2, -1, 0, -1, 1, 1, 0, 1, 2)
+#define deepfry mat3(-255, -127, 0, -1, 1, 1, 0, 127, 255)
 
 precision highp float;
 
@@ -31,15 +41,6 @@ uniform sampler2D u_image;
 uniform vec2 u_resolution;
 
 out vec4 outColor;
-
-#define identity mat3(0, 0, 0, 0, 1, 0, 0, 0, 0)
-#define edge0 mat3(1, 0, -1, 0, 0, 0, -1, 0, 1)
-#define edge1 mat3(0, 1, 0, 1, -4, 1, 0, 1, 0)
-#define edge2 mat3(-1, -1, -1, -1, 8, -1, -1, -1, -1)
-#define sharpen mat3(0, -1, 0, -1, 5, -1, 0, -1, 0)
-#define box_blur mat3(1, 1, 1, 1, 1, 1, 1, 1, 1) * 0.1111
-#define gaussian_blur mat3(1, 2, 1, 2, 4, 2, 1, 2, 1) * 0.0625
-#define emboss mat3(-2, -1, 0, -1, 1, 1, 0, 1, 2)
 
 // Find coordinate of matrix element from index
 vec2 kpos(int index)
@@ -81,7 +82,7 @@ mat3[3] region3x3(sampler2D sampler, vec2 uv)
 // kernel : kernel used for convolution
 // sampler : texture sampler
 // uv : current coordinates on sampler
-vec3 convolution(mat3 kernel, sampler2D sampler, vec2 uv)
+vec3 convolve(mat3 kernel, sampler2D sampler, vec2 uv)
 {
     vec3 fragment;
     
@@ -108,8 +109,9 @@ vec3 convolution(mat3 kernel, sampler2D sampler, vec2 uv)
 }
 
 void main() {
-    vec3 col = convolution(identity, u_image, v_texCoord);
-    outColor = vec4(col, 255.0);
+    vec3 color = convolve(identity, u_image, v_texCoord);
+
+    outColor = vec4(color, 255.0);
 }
 `,
 };

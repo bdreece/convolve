@@ -34,8 +34,6 @@ form.addEventListener('submit', e => {
     e.preventDefault();
     const data = new FormData(form);
 
-    console.debug(data);
-
     let vertexShader: WebGLShader,
         fragmentShader: WebGLShader,
         program: WebGLProgram;
