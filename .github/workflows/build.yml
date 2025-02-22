@@ -44,7 +44,7 @@ jobs:
 
     - run: mkdir -p ~/.ssh/keys
 
-    - name: Prepare SSH config
+    - name: Prepare SSH client key
       run: |
         set -xe
         cat >> ~/.ssh/keys/vps-key.pem<< EOF
