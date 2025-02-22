@@ -41,17 +41,23 @@ jobs:
       with:
         name: dist
 
-    - name: Set up SSH config
+    - run: mkdir -p ~/.ssh/keys
+
+    - name: Prepare SSH key
       run: |
-        mkdir -p ~/.ssh/keys
-        echo "${{ secrets.VPS_SSH_KEY }}" >> ~/.ssh/keys/vps-key.pem
+        set -xe
+
+        cat >> ~/.ssh/keys/vps-key.pem<< EOF
+        ${{ secrets.VPS_SSH_KEY }}
+        EOF
+
         chmod 0600 ~/.ssh/keys/vps-key.pem
 
-        ssh-keyscan -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
+    - name: Scan SSH host key fingerprint
+      run: ssh-keyscan -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to VPS
-      run: |
-        rsync -vcrptmiz -e "ssh -i ~/.ssh/keys/vps-key.pem -p ${{ secrets.VPS_SSH_PORT }}" --chown=nginx:nginx ./dist/* ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}:/opt/convolve
+      run: rsync -vcrptmiz -e "ssh -i ~/.ssh/keys/vps-key.pem -p ${{ secrets.VPS_SSH_PORT }}" --chown=nginx:nginx ./dist/* ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}:/opt/convolve
 
       
         
