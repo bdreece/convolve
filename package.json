@@ -1,24 +1,39 @@
 {
+    "$schema": "https://json.schemastore.org/package.json",
     "name": "convolve",
     "private": true,
+    "author": "Brian Reece <me@bdreece.dev>",
+    "license": "MIT",
     "version": "0.1.0",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "tsc -b && vite build",
-        "preview": "vite preview"
-    },
-    "dependencies": {
-        "flowbite": "^3.1.2",
-        "solid-js": "^1.9.4"
+        "preview": "vite preview",
+        "prepare": "husky"
     },
     "devDependencies": {
-        "@solidjs/router": "^0.15.3",
+        "@eslint/js": "^9.21.0",
         "@tailwindcss/vite": "^4.0.7",
         "@tsconfig/strictest": "^2.0.5",
+        "@types/eslint__js": "^8.42.3",
+        "@types/eslint-config-prettier": "^6.11.3",
+        "eslint": "^9.21.0",
+        "eslint-config-prettier": "^10.0.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.4.3",
+        "prettier": "^3.5.2",
         "tailwindcss": "^4.0.7",
         "typescript": "~5.7.2",
-        "vite": "^6.1.0",
-        "vite-plugin-solid": "^2.11.0"
+        "typescript-eslint": "^8.24.1",
+        "vite": "^6.1.0"
+    },
+    "engineStrict": true,
+    "engines": {
+        "node": "^22.10.0"
+    },
+    "lint-staged": {
+        "*.{ts,js}": "eslint --fix",
+        "*.{ts,js,json,html,css}": "prettier --check --write"
     }
 }

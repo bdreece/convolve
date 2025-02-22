@@ -1,0 +1,9 @@
+<type>(<scope>): <summary>
+
+# <Describe the motivation behind this change - explain WHY you are making this
+# change. Wrap all lines at 80 characters.>
+
+# Fixes #<issue number>
+
+# ──────────────────────────────── 80 chars ───────────────────────────────────┤
+
