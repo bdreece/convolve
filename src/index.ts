@@ -22,8 +22,14 @@ form.addEventListener('submit', e => {
         program: WebGLProgram;
 
     try {
-        vertexShader = createShader(gl.VERTEX_SHADER, data.get('vertex') as string);
-        fragmentShader = createShader(gl.FRAGMENT_SHADER, data.get('fragment') as string);
+        vertexShader = createShader(
+            gl.VERTEX_SHADER,
+            data.get('vertex') as string,
+        );
+        fragmentShader = createShader(
+            gl.FRAGMENT_SHADER,
+            data.get('fragment') as string,
+        );
         program = createProgram(vertexShader, fragmentShader);
 
         transformImage(program, preview.image);
@@ -55,7 +61,7 @@ function transformImage(program: WebGLProgram, image: HTMLImageElement) {
                     yield j;
                 }
             }
-        }
+        },
     });
 
     const positionBuffer = gl.createBuffer();
@@ -72,7 +78,7 @@ function transformImage(program: WebGLProgram, image: HTMLImageElement) {
                     yield j / gl.canvas.height;
                 }
             }
-        }
+        },
     });
 
     const texCoordBuffer = gl.createBuffer();

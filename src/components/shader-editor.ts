@@ -244,12 +244,10 @@ export default class ShaderEditor extends HTMLElement {
 
         const shadow = this.attachShadow({
             mode: 'open',
-            delegatesFocus: true
+            delegatesFocus: true,
         });
 
-        shadow.append(
-            template.content.cloneNode(true),
-        );
+        shadow.append(template.content.cloneNode(true));
 
         this._list = shadow.querySelector('ol')!;
     }
@@ -263,7 +261,11 @@ export default class ShaderEditor extends HTMLElement {
     }
 
     setCustomValidity(message: string) {
-        this._internals.setValidity({ customError: !!message }, message, this._list);
+        this._internals.setValidity(
+            { customError: !!message },
+            message,
+            this._list,
+        );
     }
 
     /** @internal */
@@ -286,7 +288,11 @@ export default class ShaderEditor extends HTMLElement {
     }
 
     /** @internal */
-    attributeChangedCallback(name: typeof ShaderEditor.observedAttributes[number], _: string, value: string) {
+    attributeChangedCallback(
+        name: (typeof ShaderEditor.observedAttributes)[number],
+        _: string,
+        value: string,
+    ) {
         switch (name) {
             case 'value':
                 this.value = value;
@@ -320,6 +326,6 @@ customElements.define('shader-editor', ShaderEditor);
 
 declare global {
     interface HTMLElementTagNameMap {
-        'shader-editor': ShaderEditor,
+        'shader-editor': ShaderEditor;
     }
 }

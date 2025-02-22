@@ -15,11 +15,7 @@ template.innerHTML = `
 `;
 
 export default class ImagePreview extends HTMLElement {
-    static readonly observedAttributes = [
-        'src',
-        'height',
-        'width',
-    ] as const;
+    static readonly observedAttributes = ['src', 'height', 'width'] as const;
 
     private readonly _image: HTMLImageElement;
     private _input: HTMLInputElement | undefined;
@@ -64,17 +60,19 @@ export default class ImagePreview extends HTMLElement {
             mode: 'open',
         });
 
-        shadow.append(
-            template.content.cloneNode(true),
-        );
+        shadow.append(template.content.cloneNode(true));
 
         this._image = shadow.querySelector('img')!;
     }
 
     /** @internal */
     connectedCallback() {
-        this._image.width = this._width = +(this.getAttribute('width') || this._width);
-        this._image.height = this._height = +(this.getAttribute('height') || this._height);
+        this._image.width = this._width = +(
+            this.getAttribute('width') || this._width
+        );
+        this._image.height = this._height = +(
+            this.getAttribute('height') || this._height
+        );
         this._src = this.getAttribute('src') || this._src;
         this._input = document.querySelector(this._src);
         this._input?.addEventListener('change', this);
@@ -86,7 +84,11 @@ export default class ImagePreview extends HTMLElement {
     }
 
     /** @internal */
-    attributeChangedCallback(name: typeof ImagePreview.observedAttributes[number], _: string, value: string) {
+    attributeChangedCallback(
+        name: (typeof ImagePreview.observedAttributes)[number],
+        _: string,
+        value: string,
+    ) {
         switch (name) {
             case 'src':
                 this.src = value;
@@ -116,11 +118,15 @@ export default class ImagePreview extends HTMLElement {
 
         const file = this._input.files.item(0)!;
         const fr = new FileReader();
-        fr.addEventListener('load', () => {
-            this._image.src = fr.result as string;
-        }, {
-            once: true,
-        });
+        fr.addEventListener(
+            'load',
+            () => {
+                this._image.src = fr.result as string;
+            },
+            {
+                once: true,
+            },
+        );
 
         fr.readAsDataURL(file);
     }
@@ -146,6 +152,6 @@ customElements.define('image-preview', ImagePreview);
 
 declare global {
     interface HTMLElementTagNameMap {
-        'image-preview': ImagePreview,
+        'image-preview': ImagePreview;
     }
 }
