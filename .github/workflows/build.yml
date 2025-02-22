@@ -41,18 +41,18 @@ jobs:
       with:
         name: dist
 
-    - run: mkdir -p /root/.ssh/keys
+    - run: mkdir -p ~/.ssh/keys
 
     - name: Prepare SSH config
       run: |
         set -xe
-        cat >> /root/.ssh/keys/vps-key.pem<< EOF
+        cat >> ~/.ssh/keys/vps-key.pem<< EOF
         ${{ secrets.VPS_SSH_KEY }}
         EOF
-        chmod 0600 /root/.ssh/keys/vps-key.pem
+        chmod 0600 ~/.ssh/keys/vps-key.pem
 
     - name: Scan SSH host key fingerprint
-      run: ssh-keyscan -v -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> /root/.ssh/known_hosts
+      run: ssh-keyscan -v -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to VPS
       run: ls
