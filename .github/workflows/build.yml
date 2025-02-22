@@ -40,6 +40,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: dist
+        path: dist/
 
     - run: mkdir -p ~/.ssh/keys
 
@@ -55,8 +56,7 @@ jobs:
       run: ssh-keyscan -v -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to VPS
-      run: ls
-    # run: rsync -vcrptmiz -e "ssh -i ~/.ssh/keys/vps-key.pem -p ${{ secrets.VPS_SSH_PORT }}" --chown=nginx:nginx ./dist/* ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}:/opt/convolve
+      run: rsync -vcrptmiz -e "ssh -i ~/.ssh/keys/vps-key.pem -p ${{ secrets.VPS_SSH_PORT }}" --chown=nginx:nginx ./dist/* ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}:/opt/convolve
 
       
         
