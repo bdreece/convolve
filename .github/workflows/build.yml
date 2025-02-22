@@ -54,7 +54,7 @@ jobs:
         chmod 0600 ~/.ssh/keys/vps-key.pem
 
     - name: Scan SSH host key fingerprint
-      run: ssh-keyscan -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
+      run: ssh-keyscan -v -p ${{ secrets.VPS_SSH_PORT }} -H ${{ secrets.VPS_SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to VPS
       run: rsync -vcrptmiz -e "ssh -i ~/.ssh/keys/vps-key.pem -p ${{ secrets.VPS_SSH_PORT }}" --chown=nginx:nginx ./dist/* ${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}:/opt/convolve
